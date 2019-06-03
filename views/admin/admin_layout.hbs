@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/../stylesheets/style.css' />
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/../materialize/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="/../materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/../javascripts/index.js"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+            M.AutoInit();
+        };
+
+
+    </script>
+</head>
+<body>
+
+<div class="navbar-fixed">
+    <nav style="background-color: white;">
+        <div class="nav-wrapper">
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons black-text">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/admin/users" class="black-text">Users</a></li>
+                <li><a href="/admin/wears" class="black-text">Wears</a></li>
+                <li><a href="/admin/tags" class="black-text">Tags</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="#" onclick="return loadUsersRoute();">Users</a></li>
+</ul>
+<main id="main_id">
+    {{{body}}}
+</main>
+</body>
+</html>

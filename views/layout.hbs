@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+      <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+      <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+      <meta name="msapplication-TileColor" content="#da532c">
+      <meta name="theme-color" content="#ffffff">
+
+    <link rel='stylesheet' href='{{domainUrl}}/stylesheets/style.css' />
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="{{domainUrl}}/materialize/css/materialize.min.css"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="{{domainUrl}}/materialize/js/materialize.min.js"></script>
+      <script type="text/javascript" src="{{domainUrl}}/javascripts/index.js"></script>
+
+      <script type="text/javascript">
+          window.addEventListener("load",function() {
+              M.AutoInit();
+              M.updateTextFields();
+          });
+
+      </script>
+      <style>
+          .display-left{
+              position: absolute;
+              top: 50%;
+              left: 0%;
+              transform: translate(0%,-50%);
+          }
+          .display-right{
+              position: absolute;
+              top: 50%;
+              right: 0%;
+              transform: translate(0%,-50%);
+          }
+          body {
+              background: #4568dc; /* fallback for old browsers */
+              background: -webkit-linear-gradient(to right, #4568dc, #b06ab3); /* Chrome 10-25, Safari 5.1-6 */
+              background: linear-gradient(to right, #4568dc, #b06ab3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+          }
+      </style>
+  </head>
+  <body>
+      <!-- confirm Modal-->
+      <div id="confirmModalId" class="modal">
+          <div class="modal-content">
+              <h4 id="confirmModalTitleId"></h4>
+              <p id="confirmModalDescriptionId"></p>
+          </div>
+          <div class="modal-footer">
+              <a href="#" id="confirmModalCancelId" class="waves-effect waves-red btn-flat">{{getLanguageString lang 'CANCEL'}}</a>
+              <a href="#" id="confirmModalYesId" class="waves-effect waves-green btn-flat">{{getLanguageString lang 'YES'}}</a>
+          </div>
+      </div>
+      <!-- Modal Structure -->
+      <div id="wearInfoModalId" class="modal modal-fixed-footer" style="background-color: #fff;">
+          <div class="modal-content" id="wearInfoModalContentId" style="width:100%;text-align: center;">
+              <i class="material-icons right modal-close">close</i>
+              <h4 class="flow-text" style="margin: auto;" id="wearInfoTitleId"></h4>
+              <div class="progress" id="wearInfoProgressId" style="display: none;">
+                  <div class="indeterminate"></div>
+              </div>
+              <div id="imagesListId"></div>
+              <button class="btn display-left" onclick="plusDivs(-1)">&#10094;</button>
+              <button class="btn display-right" onclick="plusDivs(+1)">&#10095;</button>
+              <p id="descriptionId"></p>
+          </div>
+          <div class="modal-footer row center">
+              <a href="#!" class="waves-effect waves-light btn modal-close left" id="buy_href_id" target="_blank"><i class="material-icons right">launch</i>{{getLanguageString lang 'BUY'}} <snap id="buy_price_id"></snap></a>
+              <label class="left" style="margin-top: 1rem;margin-left: 1rem;">{{getLanguageString lang 'AT'}} <snap id="buy_source_id"></snap></label>
+          </div>
+      </div>
+
+      <!-- Dropdown Structure -->
+      <ul id="user_dropdown" class="dropdown-content">
+          <li>
+              <a href="#!" onclick="return false;" class="black-text">
+                <img src="{{user.photos.0.value}}" class="circle responsive-img" style="max-height: 30px;vertical-align:middle;"/> {{user.displayName}}
+              </a>
+          </li>
+          <li><a href="{{domainUrl}}/user" class="black-text">{{getLanguageString lang 'PROFILE'}}</a></li>
+          <li class="divider"></li>
+          <li><a href="{{domainUrl}}/logout" class="black-text">{{getLanguageString lang 'LOGOUT'}}</a></li>
+      </ul>
+      <ul id="lang_dropdown" class="dropdown-content">
+          <li><a href="{{domainUrl}}/lang/ru" class="black-text">{{getLanguageString lang 'LANG_RU'}}</a></li>
+          <li><a href="{{domainUrl}}/lang/en" class="black-text">{{getLanguageString lang 'LANG_EN'}}</a></li>
+      </ul>
+      <div class="navbar-fixed" id="navbar_id">
+          <nav style="background-color: white;">
+              <div class="nav-wrapper">
+                  <a href="{{domainUrl}}" class="brand-logo center" style="color:#000;">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="margin-left:25px;margin-top: 5px;" width="150px" height="50px" viewBox="0 0 200 100" preserveAspectRatio="xMinYMin meet">
+                          <defs>
+                              <linearGradient id="a" y1="44.49" x2="253.98" y2="44.49" gradientUnits="userSpaceOnUse">
+                                  <stop offset="0" stop-color="#4568dc"/>
+                                  <stop offset="0.49" stop-color="#b06ab3"/>
+                                  <stop offset="0.5" stop-color="#ffffff"/>
+                                  <stop offset="0.51" stop-color="#b06ab3"/>
+                                  <stop offset="0.99" stop-color="#4568dc"/>
+                              </linearGradient>
+                          </defs>
+                          <path d="M.74,16.69C5.7,34,10.92,51.48,18.51,67.84,21.66,74.61,26,84.9,33.37,88.25c6.56,3,11.11-4.2,13.61-9.21,4.81-9.64,7.36-20.41,10.29-30.72,2.56-9,4.69-19.47,10-27.33,4.25-6.25,9.34-3.81,12.65,1.87C90.45,40.79,91.1,63,100.85,81.32,103.4,86.1,108,92,113.3,86.83c6.07-5.92,8.46-16.26,10.89-24,3.34-10.66,6.07-21.57,10.14-32,1.7-4.34,5.57-15.7,12.21-13.53s9.63,14.6,11.53,20.29c3.6,10.75,6.36,21.77,10.09,32.47,1.88,5.4,5,16.9,11.47,18.76,6.36,1.8,10.08-8.79,11.7-13C195.28,65.43,197.77,54.58,201,44c2.41-7.95,5-19.44,11.68-25C227.32,6.71,241.41,53.05,243.82,60c3.27,9.46,6.17,19.05,8.92,28.68.26.89,1.13-5.34,1.15-5.94.11-3.39.29-7.15-.65-10.46-5-17.3-10.18-34.79-17.77-51.15-3.14-6.77-7.52-17-14.86-20.4-6.56-3-11.11,4.2-13.61,9.21-4.81,9.63-7.36,20.41-10.29,30.71-2.56,9-4.69,19.47-10,27.33-4.26,6.25-9.35,3.81-12.66-1.87C163.53,48.19,162.89,26,153.13,7.66,150.58,2.88,146-3,140.68,2.15c-6.07,5.92-8.46,16.26-10.89,24.05-3.33,10.66-6.06,21.57-10.14,32-1.7,4.34-5.56,15.7-12.21,13.53s-9.63-14.6-11.53-20.29C92.31,40.68,89.55,29.67,85.82,19,83.94,13.56,80.87,2.06,74.35.21,68-1.6,64.27,9,62.65,13.23,58.7,23.56,56.21,34.41,53,45c-2.41,8-5,19.44-11.68,25C26.66,82.27,12.57,35.93,10.17,29,6.9,19.51,4,9.92,1.24.29,1-.6.11,5.64.09,6.23,0,9.62-.2,13.39.74,16.69Z" style="fill:url(#a)"/>
+                      </svg>
+                  </a>
+                  <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons black-text">menu</i></a>
+                  <ul class="right hide-on-med-and-down">
+                      <li><a href="#" onclick="loadCreateRoute();return false;" class="black-text"><i class="material-icons left">create</i>{{getLanguageString lang 'CREATE_COLLAGE'}}</a></li>
+                      <li><a href="{{domainUrl}}/posts" class="black-text">{{getLanguageString lang 'POSTS'}}</a></li>
+                      <!--<li><a href="{{domainUrl}}/shop" class="black-text">{{getLanguageString lang 'SHOP'}}</a></li>-->
+                      {{#if user}}
+                          <li>
+                              <a href="{{domainUrl}}/user" class="dropdown-trigger black-text" data-target="user_dropdown">
+                                <img src="{{user.photos.0.value}}" class="circle responsive-img" style="max-height: 30px;vertical-align:middle;"/> {{user.displayName}}
+                                <i class="material-icons right">arrow_drop_down</i>
+                                </a>
+                          </li>
+                      {{/if}}
+                      <li>
+                          <a href="#!" class="dropdown-trigger black-text" data-target="lang_dropdown">
+                            <i class="material-icons">translate</i>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </nav>
+      </div>
+
+      <ul class="sidenav" id="mobile-demo">
+        {{#if user}}
+          <div class="user-view">
+              <div class="background">
+                  <img src="/images/default_user_bg.jpg">
+              </div>
+              <a href="{{domainUrl}}/user"><img class="circle" src="{{user.photos.0.value}}"></a>
+              <a href="{{domainUrl}}/user"><span class="white-text name">{{user.displayName}}</span></a>
+              <a href="{{domainUrl}}/user"><span class="white-text email">{{user.emails.0.value}}</span></a>
+          </div>
+        {{else}}
+            <li><a href="{{domainUrl}}/auth/google" class="btn waves-effect waves-light" style="background-color: #ea4335;">{{getLanguageString lang 'LOGIN_GOOGLE'}}</a></li>
+            <li><a href="" class="btn waves-effect waves-light" style="background-color: #3a579a;">{{getLanguageString lang 'LOGIN_FACEBOOK'}}</a></li>
+            <li><a href="" class="btn waves-effect waves-light" style="background: linear-gradient(224.65793971deg,#8043af,#8442aa 2.9%,#8740a9 2.9%,#8842a8 4.2%,#8d3fa7 5.9%,#8d41a4 6.7%,#9d3d9c 16.4%,#9f3c9a 16.4%,#a63b96 20.2%,#a73a97 20.2%,#a83b96 23%,#aa3a92 23%,#ac3990 25.3%,#b63a8b 31.2%,#b93a88 35%,#bb3986 35%,#bc3986 37.4%,#be3884 37.4%,#c03a83 39.7%,#c13c83 40.3%,#c4397f 41.2%,#c63b7a 44.3%,#ca3d75 46.9%,#cb3c75 47.5%,#ca3e74 49.4%,#cc3d74 49.4%,#ce3e75 50.3%,#cf3d74 50.3%,#d84466 59.1%,#d94367 59.1%,#ef6744 90.4%,#f26a43 95.1%,#f26c42 95.1%,#f3703f 97.8%,#f46f40 97.8%,#f57041 99.7%,#f47141 99.7%,#f47141);">{{getLanguageString lang 'LOGIN_INSTAGRAM'}}</a></li>
+        {{/if}}
+          <li><a href="#" onclick="loadCreateRoute();return false;" class="black-text"><i class="material-icons left">create</i>{{getLanguageString lang 'CREATE_COLLAGE'}}</a></li>
+          <li><a href="{{domainUrl}}/posts" class="black-text">{{getLanguageString lang 'POSTS'}}</a></li>
+          <!--<li><a href="{{domainUrl}}/shop" class="black-text">{{getLanguageString lang 'SHOP'}}</a></li>-->
+          <li><a href="{{domainUrl}}/setting" class="black-text">{{getLanguageString lang 'SETTINGS'}}</a></li>
+          <li class="divider"></li>
+          <li><a href="{{domainUrl}}/logout" class="black-text">{{getLanguageString lang 'LOGOUT'}}</a></li>
+      </ul>
+      <!-- Modal Structure -->
+      <div id="login_modal_id" class="modal">
+          <div class="modal-content center">
+              <h5 id="login_modal_text_id"></h5>
+              <br/><br/><a href="{{domainUrl}}/auth/google" class="btn waves-effect waves-light" style="min-width:200px;background-color: #ea4335;">{{getLanguageString lang 'LOGIN_GOOGLE'}}</a>
+              <br/><br/><a href="" class="btn waves-effect waves-light" style="min-width:200px;background-color: #3a579a;">{{getLanguageString lang 'LOGIN_FACEBOOK'}}</a>
+              <br/><br/><a href="" class="btn waves-effect waves-light" style="min-width:200px;background: linear-gradient(224.65793971deg,#8043af,#8442aa 2.9%,#8740a9 2.9%,#8842a8 4.2%,#8d3fa7 5.9%,#8d41a4 6.7%,#9d3d9c 16.4%,#9f3c9a 16.4%,#a63b96 20.2%,#a73a97 20.2%,#a83b96 23%,#aa3a92 23%,#ac3990 25.3%,#b63a8b 31.2%,#b93a88 35%,#bb3986 35%,#bc3986 37.4%,#be3884 37.4%,#c03a83 39.7%,#c13c83 40.3%,#c4397f 41.2%,#c63b7a 44.3%,#ca3d75 46.9%,#cb3c75 47.5%,#ca3e74 49.4%,#cc3d74 49.4%,#ce3e75 50.3%,#cf3d74 50.3%,#d84466 59.1%,#d94367 59.1%,#ef6744 90.4%,#f26a43 95.1%,#f26c42 95.1%,#f3703f 97.8%,#f46f40 97.8%,#f57041 99.7%,#f47141 99.7%,#f47141);">{{getLanguageString lang 'LOGIN_INSTAGRAM'}}</a>
+              <br/><br/>
+              <br/>
+          </div>
+      </div>
+      <main>
+        {{{body}}}
+      </main>
+  </body>
+</html>

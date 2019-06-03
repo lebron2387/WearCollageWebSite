@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s2"><a href="{{domainUrl}}/user" onclick="location.href = this.href">{{getLanguageString lang "MY_SUMMARY"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myDrafts" onclick="location.href = this.href">{{getLanguageString lang "MY_DRAFTS"}}</a></li>
+            <li class="tab col s2"><a class="active" href="{{domainUrl}}/user/myPosts" onclick="location.href = this.href">{{getLanguageString lang "MY_POSTS"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myImages" onclick="location.href = this.href">{{getLanguageString lang "MY_IMAGES"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myBookmarks" onclick="location.href = this.href">{{getLanguageString lang "MY_BOOKMARKS"}}</a></li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    {{#each posts}}
+        <div class="col s12  m4 l3">
+            <div class="card">
+                <div class="card-image">
+                    <img src="{{../domainUrl}}/data/posts/512/{{this._id}}.jpg  ">
+                </div>
+                <div class="card-action">
+                    <a href="{{../domainUrl}}/createCollage/post/{{this._id}}"><i class="material-icons right">edit</i></a>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>

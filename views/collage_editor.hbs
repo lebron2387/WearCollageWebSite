@@ -1,0 +1,352 @@
+<script type="text/javascript" src="{{domainUrl}}/javascripts/hammer.min.js"></script>
+<script type="text/javascript" src="{{domainUrl}}/javascripts/collage.js"></script>
+<script type="text/javascript" src="{{domainUrl}}/javascripts/wand.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Coiny|Open+Sans|Roboto" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
+
+
+<!-- Modal Structure -->
+<div id="removeBgModalId" class="modal modal-fixed-footer" style="background-color: #fff;">
+    <div class="modal-content" id="removeBgModalContentId" style="width:100%;text-align: center;">
+        <img id="removeBgImgId" style="position:absolute;visibility: hidden;"/>
+        <canvas id="removeBgCanvasId" style="background: url('{{domainUrl}}/images/checker.jpg'); background-repeat: repeat;"></canvas>
+    </div>
+    <div class="modal-footer row center">
+        <a href="#!" id="minus_threshhold_btn_id" class="col s2 waves-effect waves-light btn-small btn-flat left"><i class="material-icons">remove</i></a>
+        <label class="left" style="margin-left: 5px;margin-top:10px;">{{getLanguageString lang 'TRESHOLD'}}:</label>
+        <label class="left" style="margin-right: 5px;margin-top:10px;" id="threshold_value_id">15</label>
+        <a href="#!" id="plus_threshhold_btn_id" class="col s2 waves-effect waves-light btn-small btn-flat left"><i class="material-icons">add</i></a>
+
+        <a href="#!" class="col s2 waves-effect waves-light btn-small modal-close right"><i class="material-icons">done</i></a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="cutBgModalId" class="modal modal-fixed-footer" style="background-color: #fff;">
+    <div class="modal-content" id="cutBgModalContentId" style="width:100%;text-align: center;">
+        <canvas id="cutBgCanvasId" style="background: url('{{domainUrl}}/images/checker.jpg'); background-repeat: repeat;"></canvas>
+    </div>
+    <div class="modal-footer row">
+        <a href="#!" onclick="clearCutPoints();return false;" class="col s5 waves-effect waves-light btn-small left"><i class="material-icons">clear_all</i></a>
+        <a href="#!" onclick="return false;" class="col s5 waves-effect waves-light btn-small modal-close right"><i class="material-icons">done</i></a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="addTextModalId" class="modal modal-fixed-footer" style="background-color: #fff;">
+    <div class="modal-content" id="addTextModalContentId" style="width:100%;text-align: center;">
+        <!--
+        <img id="removeBgImgId" style="position:absolute;visibility: hidden;"/>
+        <canvas id="addTextCanvasId"></canvas>
+        -->
+        <div class="row">
+            <div id='textarea_id' class="input-field col s12">
+                <textarea id="addTextAreaId" style="min-height: 50px;"></textarea>
+                <label for="textarea_id">{{getLanguageString lang 'FONT_TEXT'}}</label>
+            </div>
+            <div class="input-field col s12 m3" id="addTextFontDivId">
+                <select id="addTextFontId">
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans" >Open Sans</option>
+                    <option value="Coiny">Coiny</option>
+                </select>
+                <label>{{getLanguageString lang 'FONT_NAME'}}</label>
+            </div>
+            <div class="input-field col s5 m1">
+                <input id="addTextSizeId" type="number" value="30">
+                <label for="addTextSizeId">{{getLanguageString lang 'FONT_SIZE'}}</label>
+            </div>
+            <div class="input-field col s3 m1" style="padding-top:10px;">
+                <input id="addTextColorId" type="color">
+                <label for="addTextColorId" class="active">{{getLanguageString lang 'FONT_COLOR'}}</label>
+            </div>
+            <div id='italic_id' class="input-field col s2 m1" style="cursor:pointer;padding-top:10px;">
+                <i id="addTextItalicId" class="material-icons">format_italic</i>
+                <label for="italic_id" class="active">{{getLanguageString lang 'FONT_ITALIC'}}</label>
+            </div>
+            <div id='bold_id' class="input-field col s2 m1" style="cursor:pointer;padding-top:10px;">
+                <i id="addTextBoldId" class="material-icons">format_bold</i>
+                <label for="bold_id" class="active">{{getLanguageString lang 'FONT_BOLD'}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer row center">
+        <a href="" id="addTextDoneId" class="col s4 waves-effect waves-light btn-small modal-close right" style="margin-left: 10px;"><i class="material-icons">done</i></a>
+        <a href="" onclick="return false;" class="col s4 waves-effect waves-light btn btn-flat modal-close left">{{getLanguageString lang 'CANCEL'}}</a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="saveModalId" class="modal modal-fixed-footer" style="min-height:85%;background-color: #fff;">
+    <a href="#!" class="waves-effect waves-red btn-flat modal-close right"><i class="material-icons">close</i></a>
+    <div class="modal-content" id="saveModalContentId" style="text-align: center;">
+
+        <img id='saveModalId_resultImgId'>
+        <br/><br/>
+        <div class="input-field col s12" style="width:100%;max-width:500px;text-align: center;margin: auto;">
+            <textarea id="post_descr_textarea_id" class="materialize-textarea" rows="4" data-length="150" maxlength="150" style="width:100%;max-width:500px;"></textarea>
+            <label for="post_descr_textarea_id">{{getLanguageString lang 'POST_DESCRIPTION'}}</label>
+        </div>
+        <!--
+        <div id="show_emojis_icon_id">
+            <i onclick="showEmojis(document.getElementById('post_descr_textarea_id'),document.getElementById('saveModalContentId'));" class="material-icons">insert_emoticon</i>
+        </div>
+        <div id="emoji_panel_id" style="position:absolute;visibility: hidden;background-color: #fff;"></div>
+        -->
+    </div>
+    <div class="modal-footer row">
+        <a href="#!" id="publish_btn_id" class="col s6 waves-effect waves-green btn center">{{getLanguageString lang 'PUBLISH'}}</a>
+        <a href="#!" id="save_draft_btn_id" class="col s6 waves-effect waves-green btn-flat center">{{getLanguageString lang 'SAVE_DRAFT'}}</a>
+
+    </div>
+</div>
+
+<div class="row" style="margin-bottom: 0px;">
+{{#if user}}
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;margin-left: 10px;" onclick="canvasClass.saveJSON(function(data){onSaveBtn(data,'{{editId}}');});return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">save</i></a>
+{{else}}
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;margin-left: 10px;" onclick="showLoginModal('{{getLanguageString lang 'NEED_LOGIN_TO_SAVE_COLLAGE'}}');return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">save</i></a>
+{{/if}}
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.undo();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">undo</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.flipXSelected();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">swap_horiz</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.flipYSelected();return false;" class="col s1 btn btn-flat "><i class="material-icons white-text large">swap_vert</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.orderUpSelected();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">arrow_upward</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.orderDownSelected();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">arrow_downward</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.cloneSelected();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">file_copy</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="canvasClass.removeSelected(false);return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">delete</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="onCutBgBtn();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">rounded_corner</i></a>
+    <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="onRemoveBgBtn();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">photo_filter</i></a>
+        <a href='#' style="min-width:1.5rem;max-width:2.5rem;padding:0px;" onclick="onTextBtn();return false;" class="col s1 btn btn-flat"><i class="material-icons white-text large">text_fieldst</i></a>
+</div>
+<div class="row">
+    <div class="col s12 m8">
+        <canvas id='canvas_id' style='background-color:#fff;border:1px solid #ccc;width:100%;overflow:hidden;'></canvas>
+    </div>
+    <div class="col s12 m4" id="content_panel_id" style="background-color:#fff; border: 1px solid #ccc;">
+        <div class="row">
+            <div class="col s3 center">
+                <a href="#!" class="active"  onclick="scrollToWearsPanel();showWears('female','clothing','all','all','all',0,15,true);"><i class="material-icons">face</i></a>
+            </div>
+            <div class="col s3 center">
+                {{#if user}}
+                    <a href="#!" onclick="showMyImages();"><i class="material-icons">photo_library</i></a>
+                {{else}}
+                    <a href='#!' id="favorites_wears_btn_id" onclick="showLoginModal('{{getLanguageString lang 'NEED_LOGIN_TO_ADD_YOUR_PICTURES'}}');return false;">
+                        <i class="material-icons center">photo_library</i>
+                    </a>
+                {{/if}}
+            </div>
+            <div class="col s3 center">
+                {{#if user}}
+                    <a href="#!" onclick="scrollToWearsPanel();showFavorites();return false;"><i class="material-icons red-text">favorite</i></a>
+                {{else}}
+                    <a href='#' id="favorites_wears_btn_id" onclick="showLoginModal('{{getLanguageString lang 'NEED_LOGIN_TO_VIEW_FAVORIES'}}');return false;">
+                        <i class="material-icons red-text">favorites</i>
+                    </a>
+                {{/if}}
+            </div>
+            <div class="col s3 center">
+                {{#if user}}
+                    <a href="#!" onclick="scrollToWearsPanel();showHistory();return false;">
+                        <i class="material-icons">history</i>
+                    </a>
+                {{else}}
+                    <a href='#' id="history_wears_btn_id" onclick="showLoginModal('{{getLanguageString lang 'NEED_LOGIN_TO_VIEW_HISTORY '}}');return false;">
+                        <i class="material-icons">history</i>
+                    </a>
+                {{/if}}
+            </div>
+        </div>
+        <div id="types_panel_id" class="row" style="padding-top: 0px;margin-top: 0px;margin-bottom: 0px;">
+            <div class="col s12">
+                <div class="input-field col s12">
+                    <select id="select_wears_type_id">
+                        <option value="clothing">{{getLanguageString lang 'CLOTHING'}}</option>
+                        <option value="shoes">{{getLanguageString lang 'SHOES'}}</option>
+                        <option value="bags">{{getLanguageString lang 'BAGS'}}</option>
+                        <option value="accessories">{{getLanguageString lang 'ACCESSORIES'}}</option>
+                    </select>
+                    <label>{{getLanguageString lang 'CATEGORIES'}}</label>
+                </div>
+                <script>
+                    document.getElementById('select_wears_type_id').onchange = function(e){
+                        var value = this.options[this.selectedIndex].value;
+                        scrollToWearsPanel();
+                        showWears(selectedGender,value,'all','all','all',0,15,true);
+                    }
+                </script>
+            </div>
+        </div>
+        <div id="tags_panel_id" class="row" style="padding:0px;margin:0px;">
+            <div class="input-field col s6">
+                <select id="select_tags_id">
+                </select>
+                <label>{{getLanguageString lang 'CATEGORIES'}}</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="select_brands_id">
+                </select>
+                <label>{{getLanguageString lang 'BRANDS'}}</label>
+            </div>
+            <!--
+            <div class="input-field col s2">
+                <a class='dropdown-trigger btn-flat' href='#' id="select_colors_trigger_id" data-target='select_colors_id'>
+                    <i class="material-icons">color_lens</i></a>
+                <!-- Dropdown Structure -->
+                <!--<ul id='select_colors_id' class='dropdown-content'>
+                    <li onclick="showWears(selectedGender,selectedType,selectedTag,'all',selectedBrand,0,15,false);"
+                     style="text-align: center;padding-top: 10px;">
+                        <b>{{getLanguageString lang 'ALL_FILTER'}}</b>
+                    </li>
+                    {{#each colors}}
+                        <li onclick="showWears(selectedGender,selectedType,selectedTag,'{{@key}}',selectedBrand,0,15,false);">
+                            <img src="{{domainUrl}}/images/colors/{{this}}" class="responsive-img"/>
+                        </li>
+                    {{/each}}
+                    {{#each colorsHex}}
+                        <li  onclick="showWears(selectedGender,selectedType,selectedTag,'{{@key}}',selectedBrand,0,15,false);"
+                             style="background-color: {{this}}; margin-top: 10px;">&nbsp;</li>
+                    {{/each}}
+                </ul>
+            </div>-->
+        </div>
+
+        <div id="wears_panel_id" style="text-align: center;overflow-x: hidden;">
+        </div>
+    </div>
+</div>
+
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        min-height:5rem;
+    }
+</style>
+<footer>
+</footer>
+<script>
+    var selectedGender = "female";
+    var selectedType = "clothing";
+    var selectedTag = "all";
+    var selectedBrand = "all";
+    var selectedColor = "all";
+    var editType = "";
+    var langForSelects = {
+        all:"{{getLanguageString lang 'ALL_FILTER'}}",
+        of:"{{getLanguageString lang 'OF'}}",
+        total:"{{getLanguageString lang 'TOTAL'}}"
+    };
+    var langSaveBtn = "{{getLanguageString lang 'SAVE'}}";
+    var canvasClass = null;
+
+    var DoubleTap = new Hammer(document.getElementById('canvas_id'),{preset:["doubletap"]});
+    DoubleTap.get('doubletap').set({ enable: true });
+    DoubleTap.on("doubletap", function(event) {
+        event.preventDefault();
+        var image = canvasClass.getSelectedImage();
+        if(image != null && image.type === 'text'){
+            onTextBtn();
+        }
+    });
+
+    document.getElementById('canvas_id').ondblclick = function(event){
+        event.preventDefault();
+        var image = canvasClass.getSelectedImage();
+        if(image != null && image.type === 'text'){
+            onTextBtn();
+        }
+    }.bind(this);
+
+    function calcSidePanelSize(){
+        if(window.innerWidth > 600) {
+            var nav_rect = document.getElementById('navbar_id').getBoundingClientRect();
+            var side_panel_height = (window.innerHeight - nav_rect.height - 100);
+            var content_panel_el = document.getElementById('content_panel_id');
+            content_panel_el.style.height = side_panel_height + "px";
+            var _tmp_rect = document.getElementById('wears_panel_id').getBoundingClientRect();
+            document.getElementById('wears_panel_id').style.maxHeight = side_panel_height - 30 - (_tmp_rect.y - content_panel_el.getBoundingClientRect().y) + "px";
+            document.getElementById('wears_panel_id').style.overflowY = "scroll";
+        }
+    }
+
+    window.addEventListener("load",function() {
+        M.CharacterCounter.init(document.getElementById('post_descr_textarea_id'));
+        M.Dropdown.init(document.getElementById('select_colors_trigger_id'), {alignment:'right'});
+        M.Tabs.init(document.getElementById('side_panel_tabs_id'), {});
+
+        var canvas_el = document.getElementById('canvas_id');
+
+        var nav_rect = document.getElementById('navbar_id').getBoundingClientRect();
+
+        canvas_el.style.height = (window.innerHeight - nav_rect.height - 100) + "px";
+        var canvas_nav_rect = canvas_el.getBoundingClientRect();
+
+        if(canvas_nav_rect.width < canvas_nav_rect.height){
+            canvas_el.style.height = canvas_nav_rect.width + "px";
+
+        }
+
+        calcSidePanelSize();
+
+
+        showWears('female','clothing','all','all','all',0,15,true);
+        canvasClass = new CCanvas(document.getElementById('canvas_id'));
+        canvasClass.setupEvents();
+        {{#if type}}
+            editType = '{{type}}';
+        {{/if}}
+        {{#if editId}}
+            var _loadObj = {imgWidth:{{editObj.imgWidth}},imgHeight:{{editObj.imgHeight}},wears:{}};
+            {{#each editObj.wears}}
+                _loadObj['wears']['{{@key}}'] = {
+                    {{#if this.src}}
+                        src :  "{{this.src}}",
+                    {{/if}}
+                    {{#if this.sizePx}}
+                        sizePx :  "{{this.sizePx}}",
+                    {{/if}}
+                    {{#if this.fontStyle}}
+                        fontStyle :  "{{this.fontStyle}}",
+                    {{/if}}
+                    {{#if this.fontFamily}}
+                        fontFamily :  "{{this.fontFamily}}",
+                    {{/if}}
+                    {{#if this.color}}
+                        color :  "{{this.color}}",
+                    {{/if}}
+                    textLines: new String("{{this.textLines}}").split(','),
+                    type:  "{{this.type}}",
+                    x :     {{this.x}},
+                    y :     {{this.y}},
+                    scale : {{this.scale}},
+                    angle : {{this.angle}},
+                    flipX : {{this.flipX}},
+                    flipY : {{this.flipY}},
+                    order : {{this.order}}
+                    {{#if this.clipJSONStr}}
+                        ,clipContour : JSON.parse('{{this.clipJSONStr}}')
+                    {{/if}}
+                };
+
+            {{/each}}
+            canvasClass.loadFrom('{{editId}}',_loadObj);
+        {{else}}
+            canvasClass.loadFromLocalStorage();
+        {{/if}}
+    });
+
+    function scrollToWearsPanel(){
+        var nav_rect = document.getElementById('navbar_id').getBoundingClientRect();
+        window.scrollTo({
+            left: 0,
+            top: parseInt(document.getElementById('content_panel_id').offsetTop - nav_rect.height),
+            behavior: 'smooth'
+        });
+    }
+</script>

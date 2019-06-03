@@ -1,0 +1,18 @@
+
+
+<table>
+    {{#each collections}}
+        <tr>
+            <td>
+                {{this.coll}}
+            </td>
+            <td>
+                <a href="/admin/tags/generateResults/{{gender}}/{{type}}" class="btn">generate Search Results</a>
+            </td>
+            <td>
+                <a href="/admin/tags/generateUniqTags/{{gender}}/{{type}}" class="btn">generate Uniq Tags Metadata</a>
+            </td>
+        </tr>
+    {{/each}}
+</table>
+

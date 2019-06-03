@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s2"><a href="{{domainUrl}}/user" onclick="location.href = this.href">{{getLanguageString lang "MY_SUMMARY"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myDrafts" onclick="location.href = this.href">{{getLanguageString lang "MY_DRAFTS"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myPosts" onclick="location.href = this.href">{{getLanguageString lang "MY_POSTS"}}</a></li>
+            <li class="tab col s2"><a href="{{domainUrl}}/user/myImages" onclick="location.href = this.href">{{getLanguageString lang "MY_IMAGES"}}</a></li>
+            <li class="tab col s2"><a class="active" href="{{domainUrl}}/user/myBookmarks" onclick="location.href = this.href">{{getLanguageString lang "MY_BOOKMARKS"}}</a></li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    {{#ifCond posts_count '>' '0'}}
+        {{#each posts}}
+            <div class="col s12 m4 l3">
+                <div class="card hoverable">
+                    <div class="card-image">
+                        <img src="{{../domainUrl}}/data/posts/512/{{this._id}}.jpg  ">
+                    </div>
+                    <div class="card-content">
+                        <p>{{this.description}}</p>
+                    </div>
+                    <div class="card-action">
+                        {{#if this.editable}}
+                            <a href="{{../domainUrl}}/createCollage/post/{{this._id}}"><i class="material-icons right">edit</i></a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <div class="col s12 center" style="background-color: #fff;">
+            <h4>{{getLanguageString lang 'NO_POSTS_ARE_BOOKMARKED'}}</h4>
+        </div>
+    {{/ifCond}}
+</div>
+
+<div class="row" id="shop_bookmarks_row_id">
+        <script>
+            function addBookmarkedShopItem(root_elm,data) {
+                var colElm = document.createElement('div');
+                colElm.className = "col s12 m4 l3";
+                var cardElm = document.createElement('div');
+                cardElm.className = "card hoverable";
+                var cardImgElm = document.createElement('div');
+                cardImgElm.className = "card-image";
+                var cardImg = document.createElement('img');
+                var imgHash = data['images']['main']['hash'];
+                cardImg.src = domainUrl+"/wears/600/"+imgHash.substring(0,2)+"/"+imgHash+".jpg";
+                cardImg.style.cursor = "pointer";
+                (function(cardImg,data){
+                    cardImg.onclick = function(){
+                        onShowInfo(data['gender'],data['type'],data['_id'],data['source_name'],data['href'],data['price']);
+                        return false;
+                    }
+                })(cardImg,data);
+
+                var cardContentElm = document.createElement('div');
+                cardContentElm.className = "card-content";
+                var cardActionElm = document.createElement('div');
+                cardActionElm.className = "card-action";
+
+                //image
+                cardImgElm.appendChild(cardImg);
+                //content
+                var pElm = document.createElement('p');
+                var aElm = document.createElement('a');
+                aElm.href = "#!";
+                aElm.innerHTML = data['name'];
+                (function(aElm,data){
+                    aElm.onclick = function(){
+                        onShowInfo(data['gender'],data['type'],data['_id'],data['source_name'],data['href'],data['price']);
+                        return false;
+                    }
+                })(aElm,data);
+                pElm.appendChild(aElm);
+                cardContentElm.appendChild(pElm);
+
+
+                //action panel
+                var spanElm = document.createElement('span');
+                spanElm.innerHTML = data['price'];
+                cardActionElm.appendChild(spanElm)
+
+                cardElm.appendChild(cardImgElm);
+                cardElm.appendChild(cardContentElm);
+                cardElm.appendChild(cardActionElm);
+                colElm.appendChild(cardElm);
+                root_elm.appendChild(colElm);
+            }
+            var _tmp_urls = "{{getShopBookmarksUrlList items}}";
+            var _tmp_urls_arr = _tmp_urls.split(',');
+            for(var i=0;i<_tmp_urls_arr.length;i++) {
+                get('{{domainUrl}}/user/myBookmarks'+_tmp_urls_arr[i], function (data) {
+                    var data_obj = JSON.parse(data);
+                    var root_elm = document.getElementById('shop_bookmarks_row_id');
+                    for(var j=0;j<data_obj.length;j++){
+                        addBookmarkedShopItem(root_elm,data_obj[j]);
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
+            }
+        </script>
+
+</div>

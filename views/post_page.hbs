@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col s12 m10 offset-m1">
+            <div class="card">
+                <div class="card-image">
+                    <img style="max-width: {{post.imgWidth}}px;max-height: {{post.imgHeight}}px;" src="{{domainUrl}}/data/posts/{{post._id}}.jpg">
+                    <span class="card-title black-text">Card Title</span>
+                </div>
+                <div class="card-content">
+                    <p>{{post.desctiption}}</p>
+                </div>
+                <div class="card-action">
+                    {{#if liked}}
+                        <a href="#"><i onclick="unlikeit('{{post._id}}',this,'favorite','favorite_border');return false;" class="material-icons right">favorite</i></a>
+                    {{else}}
+                        <a href="#"><i onclick="likeit('{{post._id}}',this,'favorite','favorite_border');return false;" class="material-icons right">favorite_border</i></a>
+                    {{/if}}
+
+                    {{#if bookmarked}}
+                        <a href="#"><i onclick="unbookmarkit('{{post._id}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark</i></a>
+                    {{else}}
+                        <a href="#"><i onclick="bookmarkit('{{post._id}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark_border</i></a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

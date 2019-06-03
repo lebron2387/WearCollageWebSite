@@ -1,0 +1,32 @@
+<div class="row">
+{{#each posts}}
+    <div class="col s12 m4 l3">
+        <div class="card hoverable">
+            <div class="card-image">
+                <a href="{{../domainUrl}}/post/{{this._id}}">
+                    <img src="{{../domainUrl}}/data/posts/512/{{this._id}}.jpg  ">
+                </a>
+            </div>
+            <div class="card-content">
+                <p>{{this.description}}</p>
+            </div>
+            <div class="card-action">
+                {{#if this.editable}}
+                    <a href="{{../domainUrl}}/createCollage/post/{{this._id}}"><i class="material-icons right">edit</i></a>
+                {{/if}}
+                {{#if this.liked}}
+                    <a href="#"><i onclick="unlikeit('{{this._id}}',this,'favorite','favorite_border');return false;" class="material-icons right">favorite</i></a>
+                {{else}}
+                    <a href="#"><i onclick="likeit('{{this._id}}',this,'favorite','favorite_border');return false;" class="material-icons right">favorite_border</i></a>
+                {{/if}}
+
+                {{#if this.bookmarked}}
+                    <a href="#"><i onclick="unbookmarkit('{{this._id}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark</i></a>
+                {{else}}
+                    <a href="#"><i onclick="bookmarkit('{{this._id}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark_border</i></a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+{{/each}}
+</div>

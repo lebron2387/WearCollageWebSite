@@ -1,0 +1,16 @@
+<div class="container">
+{{#each users}}
+    <ul class="collection">
+        <li class="collection-item avatar">
+            {{#ifCond this.socialnetwork_profile.provider '==' 'google'}}
+                <img src="{{this.socialnetwork_profile.photos.0.value}}" alt="" class="circle">
+            {{/ifCond}}
+            <span class="title">{{_id}}</span>
+            <p>{{this.socialnetwork_profile.displayName}} <br>
+                Second Line
+            </p>
+
+        </li>
+    </ul>
+{{/each}}
+</div>

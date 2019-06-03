@@ -1,0 +1,99 @@
+<script>
+    function setTags(id,tags_sep_by_comma){
+        var tags = tags_sep_by_comma.split(',');
+        postJSON('https://wearmenu.com/admin/setTags', JSON.stringify({
+                id:id,
+                tags:tags,
+                collName:'{{type}}'
+            }),
+            function (err) {
+                console.log(err);
+            },
+            function (data) {
+                if(data === 'success'){
+                    M.toast('Saved!');
+                }else {
+                    console.log(data);
+                }
+            });
+    }
+    function setColors(id,colors_sep_by_comma){
+        var colors = colors_sep_by_comma.split(',');
+        postJSON('https://wearmenu.com/admin/setColors', JSON.stringify({
+                    id:id,
+                    colors:colors,
+                    collName:'{{type}}'
+                }),
+                function (err) {
+                    console.log(err);
+                },
+                function (data) {
+                    if(data === 'success'){
+                        M.toast('Saved!');
+                    }else {
+                        console.log(data);
+                    }
+                });
+    }
+</script>
+
+{{#each collections}}
+    <a href="/admin/wears/{{this}}" class="btn">{{this}}</a>
+{{/each}}
+<hr/>
+<a href="/admin/wears/{{type}}/withoutTags" class="btn">withoutTags</a>
+<a href="/admin/wears/{{type}}/withoutColors" class="btn">withoutColors</a>
+
+<div class="container">
+    {{#each wears}}
+        <ul class="collection">
+            <li class="collection-item">
+                <div class="row">
+                    <div class="col s2">
+                        <img src="{{this.imagesSrc.[0].src}}" class="responsive-img"/><br/>
+                        <a href="{{this.imagesSrc.[0].url}}">link</a>
+                    </div>
+                    <div class="col s10">
+                        <b>_id:</b>{{this._id}}
+                        <br/>
+                        {{this.names.english}}
+                        <a href="{{this.url}}" target="_blank"><i class="material-icons">open_in_new</i></a>
+                        <br/>
+                        <div class="input-field col s10 inline">
+                            <b>Tags:</b><input id="input_tags_{{@key}}" value="{{this.tags}}" style="width:500px;"/>
+                        </div>
+                        <a href="#" class="btn col s2" onclick="setTags('{{this._id}}',document.getElementById('input_tags_{{@key}}').value);return false;">Save</a>
+
+                        <br/>
+                        <div class="input-field col s10 inline">
+                            <b>Colors:</b><input id="input_colors_{{@key}}" value="{{this.colors}}" style="width:500px;"/>
+                        </div>
+                        <a href="#" class="btn col s2" onclick="setColors('{{this._id}}',document.getElementById('input_colors_{{@key}}').value);return false;">Save</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    {{/each}}
+</div>
+<!--
+<form enctype="multipart/form-data" id="file-form" method="POST">
+    <div id="upup">
+        <p id="progressdiv"><progress max="100" value="0" id="progress" style="display: none;"></progress></p>
+        <input type="file" name="file-select"  id="file-select">
+        <button type="submit" id="upload-button">Upload</button>
+    </div>
+</form>
+<script>
+    UploadFile("https://wearmenu.com/admin/wears/upload","file-form","file-select","upload-button",
+        function(data){
+        },
+        function(e){
+
+    });
+
+    window.addEventListener("load",function() {
+        M.updateTextFields();
+    });
+</script>
+-->
+

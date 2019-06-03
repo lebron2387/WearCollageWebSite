@@ -1,0 +1,223 @@
+<style>
+{{!--
+    .search_id_class {
+        margin-top:-5px;
+        height:20px;
+        color: #000;
+        background-color: #fff;
+    }
+--}}
+    .hover-underline-animation {
+        font-size: 1.0rem;
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        color: #fff;
+        display:inline;
+        white-space: nowrap;
+    }
+    .hover-underline-animation::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+    }
+    .hover-underline-animation:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+</style>
+{{!--
+<div class="row" style="margin-bottom: 0px;">
+    <div class="col s12">
+        <div id="search_id" class="chips chips-autocomplete card search_id_class">
+        </div>
+    </div>
+</div>
+--}}
+<div class="row" style="margin-bottom: 0px;">
+    <div class="col s6 m2 l1 center">
+        <a class="dropdown-trigger hover-underline-animation" data-target='gender_dropdown'>
+            {{#if gender}}
+                {{getLanguageMenuString lang gender}}
+            {{else}}
+                {{getLanguageMenuString lang 'gender'}}
+            {{/if}}
+            <i class="material-icons tiny" style="position:relative;top:0.2rem;">keyboard_arrow_down</i>
+        </a>
+    </div>
+    <div class="col s6 m2 l1 center">
+        <a class="dropdown-trigger hover-underline-animation" data-target='type_dropdown'>
+            {{#if type}}
+                {{getLanguageMenuString lang type}}
+            {{else}}
+                {{getLanguageMenuString lang 'type'}}
+            {{/if}}
+
+            <i class="material-icons tiny" style="position:relative;top:0.2rem;">keyboard_arrow_down</i>
+        </a>
+    </div>
+    <div class="col s4 m2 l1 center">
+        <a class="dropdown-trigger hover-underline-animation" data-target='category_dropdown'>
+            {{#if category}}
+                {{#ifCond category '!=' 'all'}}
+                    {{category}}
+                {{else}}
+                    {{getLanguageMenuString lang 'category'}}
+                {{/ifCond}}
+            {{else}}
+                {{getLanguageMenuString lang 'category'}}
+            {{/if}}
+
+            <i class="material-icons tiny" style="position:relative;top:0.2rem;">keyboard_arrow_down</i>
+        </a>
+    </div>
+    <div class="col s4 m2 l1 center">
+        <a class="dropdown-trigger hover-underline-animation" data-target='brand_dropdown'>
+            {{#if brand}}
+                {{#ifCond brand '!=' 'all'}}
+                    {{brand}}
+                {{else}}
+                    {{getLanguageMenuString lang 'brand'}}
+                {{/ifCond}}
+            {{else}}
+                {{getLanguageMenuString lang 'brand'}}
+            {{/if}}
+
+            <i class="material-icons tiny" style="position:relative;top:0.2rem;">keyboard_arrow_down</i>
+        </a>
+    </div>
+    <div class="col s4 m2 l1 center">
+        <a class="dropdown-trigger hover-underline-animation" data-target='colors_dropdown'>
+            {{#if color}}
+                {{#ifCond color '!=' 'all'}}
+                    {{color}}
+                {{else}}
+                    {{getLanguageMenuString lang 'color'}}
+                {{/ifCond}}
+            {{else}}
+                {{getLanguageMenuString lang 'color'}}
+            {{/if}}
+            <i class="material-icons tiny" style="position:relative;top:0.2rem;">keyboard_arrow_down</i>
+        </a>
+    </div>
+</div>
+
+<!-- Dropdown Structure -->
+<ul id='gender_dropdown' class='dropdown-content'>
+    {{#each gender_values}}
+        <li><a href="{{../domainUrl}}/shop/{{this}}/{{../type}}/{{../category}}/{{../brand}}/{{../color}}">{{getLanguageMenuString ../lang this}}</a></li>
+    {{/each}}
+</ul>
+
+<!-- Dropdown Structure -->
+<ul id='type_dropdown' class='dropdown-content'>
+    {{#each type_values}}
+        <li><a href="{{../domainUrl}}/shop/{{../gender}}/{{this}}/{{../category}}/{{../brand}}/{{../color}}">{{getLanguageMenuString ../lang this}}</a></li>
+    {{/each}}
+</ul>
+
+<!-- Dropdown Structure -->
+<ul id='category_dropdown' class='dropdown-content'>
+    <li><a href="{{domainUrl}}/shop/{{gender}}/{{type}}/all/{{brand}}/{{color}}">{{getLanguageMenuString lang 'all'}}</a></li>
+    {{#each category_values}}
+        <li><a href="{{../domainUrl}}/shop/{{../gender}}/{{../type}}/{{this}}/{{../brand}}/{{../color}}">{{this}}</a></li>
+    {{/each}}
+</ul>
+
+<!-- Dropdown Structure -->
+<ul id='brand_dropdown' class='dropdown-content'>
+    <li><a href="{{domainUrl}}/shop/{{gender}}/{{type}}/{{category}}/all/{{color}}">{{getLanguageMenuString lang 'all'}}</a></li>
+    {{#each brand_values}}
+        <li><a href="{{../domainUrl}}/shop/{{../gender}}/{{../type}}/{{../category}}/{{this}}/{{../color}}">{{this}}</a></li>
+    {{/each}}
+</ul>
+
+<!-- Dropdown Structure -->
+<ul id='colors_dropdown' class='dropdown-content'>
+    <li><a href="{{domainUrl}}/shop/{{gender}}/{{type}}/{{category}}/{{brand}}/all">{{getLanguageMenuString lang 'all'}}</a></li>
+    {{#each color_values}}
+        <li><a href="{{../domainUrl}}/shop/{{../gender}}/{{../type}}/{{../category}}/{{../brand}}/{{this}}">{{this}}</a></li>
+    {{/each}}
+</ul>
+{{!--
+<script>
+    var tags_instance;
+    get("{{domainUrl}}/shop_utils/get_tags",function(data){
+        var dataObj = JSON.parse(data);
+        for(var key in dataObj){
+            dataObj[key] = null;
+        }
+        tags_instance = M.Chips.init(document.getElementById('search_id'), {
+            autocompleteOptions: {
+                data: dataObj
+            },
+            limit:3,
+            minLength: 1,
+            placeholder:"{{getLanguageString lang "ADD_TAG"}}",
+            onChipAdd: function(){
+                var _data = tags_instance.chipsData;
+                for(var i=0;i<_data.length;i++){
+                    console.log(_data[i].tag);
+                }
+            },
+            onChipSelect: function(){
+
+            },
+            onChipDelete: function(){
+                console.log(tags_instance.chipsData);
+            }
+        });
+
+    },function(err){});
+</script>
+--}}
+<div class="col s12 center"><label class="white-text">{{getLanguageString lang 'TOTAL'}}: {{items_count}}</label></div>
+<div class="row">
+    {{#each items}}
+        <div class="col s12 m4 l3">
+            <div class="card hoverable">
+                <div class="card-image" style="min-height: 300px;">
+                    <img class="responsive-img" style="cursor: pointer;"
+                         onclick="onShowInfo('{{../gender}}','{{../type}}','{{this._id}}','{{this.source_name}}','{{this.href}}','{{getLanguageString ../lang ../currency}} {{this.price}}');return false;"
+                         src="{{getItemImageUrlFromHash "600" this.images.main.hash}}">
+                </div>
+                <div class="card-content" style="min-height: 100px;">
+                    <p><a href="#!" onclick="onShowInfo('{{../gender}}','{{../type}}','{{this._id}}','{{this.source_name}}','{{this.href}}','{{getLanguageString ../lang ../currency}} {{this.price}}');return false;">{{this.name}}</a></p>
+                </div>
+                <div class="card-action">
+                    {{#if this.price}}
+                        <span>{{getLanguageString ../lang ../currency}} {{this.price}}</span>
+                    {{/if}}
+                    {{#if ../user}}
+                        {{#if this.liked}}
+                            <a href="#"><i onclick="shopUnlikeit('{{this._id}}','{{../gender}}','{{../type}}',this,'favorite','favorite_border','{{getItemImageUrlFromHash "600" this.images.main.hash}}');return false;" class="material-icons right red-text">favorite</i></a>
+                        {{else}}
+                            <a href="#"><i onclick="shopLikeit('{{this._id}}','{{../gender}}','{{../type}}',this,'favorite','favorite_border','{{getItemImageUrlFromHash "600" this.images.main.hash}}');return false;" class="material-icons right red-text">favorite_border</i></a>
+                        {{/if}}
+                        {{#if this.bookmarked}}
+                            <a href="#"><i onclick="shopUnbookmarkit('{{this._id}}','{{../gender}}','{{../type}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark</i></a>
+                        {{else}}
+                            <a href="#"><i onclick="shopBookmarkit('{{this._id}}','{{../gender}}','{{../type}}',this,'bookmark','bookmark_border');return false;" class="material-icons right">bookmark_border</i></a>
+                        {{/if}}
+                    {{else}}
+                        <a href="#"><i onclick="showLoginModal('{{getLanguageString ../lang 'NEED_LOGIN_TO_LIKE_PRODUCT'}}');return false;" class="material-icons right red-text">favorite_border</i></a>
+                        <a href="#"><i onclick="showLoginModal('{{getLanguageString ../lang 'NEED_LOGIN_TO_BOOKMARK_PRODUCT'}}');return false;" class="material-icons right">bookmark_border</i></a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+<div id="pagination_row_id" class="center"></div>
+<script>
+    document.getElementById('pagination_row_id').appendChild(
+        genShopPagesRow("{{domainUrl}}/shop/{{gender}}/{{type}}/{{category}}/{{brand}}/{{color}}",{{page}},{{items_limit}},{{items_count}}));
+</script>
